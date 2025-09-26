@@ -1,0 +1,26 @@
+{
+  "name": "mines-predictor-vercel",
+  "version": "1.0.0",
+  "description": "Mines Predictor for Vercel deployment",
+  "main": "server.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "start": "vercel dev"
+  },
+  "keywords": [
+    "mines",
+    "predictor",
+    "vercel",
+    "game"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^35.0.0"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

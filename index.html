@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="КАВЕМИНЫ - Игра в мины с реальными ставками" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>КАВЕМИНЫ - Игра в мины</title>
+    <script>(function(){if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./mock-sw.js',{scope:'./'}).catch(function(){})});}})();</script>
+    <script defer="defer" src="/static/js/runtime.830375236abe52ab9f6f.js"></script>
+    <script defer="defer" src="/static/js/main.95a51fb23a11010e8f6e.js"></script>
+    <link href="/static/css/main.144a5b0d.css" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); 
+            color: #fff; 
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        #root { 
+            width: 100vw;
+            height: 100vh;
+        }
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 28px;
+            color: #00ff88;
+            z-index: 9999;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        .spinner {
+            border: 4px solid #333;
+            border-top: 4px solid #00ff88;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <noscript>Для запуска игры необходимо включить JavaScript в вашем браузере.</noscript>
+    <div id="root">
+        <div class="loading">
+            <div>⛏️ КАВЕМИНЫ</div>
+            <div class="spinner"></div>
+            <div class="loading-text">Загрузка игры...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Скрываем загрузку когда игра загрузится
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loading = document.querySelector('.loading');
+                if (loading) {
+                    loading.style.display = 'none';
+                }
+            }, 3000);
+        });
+        
+        // Проверяем загрузку API и баланс
+        fetch('/mines/user')
+            .then(response => response.json())
+            .then(data => {
+                console.log('КАВЕМИНЫ: API работает, баланс игрока:', data.balance + ' ₽');
+                // Обновляем текст загрузки с информацией о балансе
+                const loadingText = document.querySelector('.loading-text');
+                if (loadingText) {
+                    loadingText.innerHTML = `Загрузка игры...<br><small>Баланс: ${data.balance} ₽</small>`;
+                }
+            })
+            .catch(error => {
+                console.error('КАВЕМИНЫ: Ошибка подключения к API:', error);
+                const loadingText = document.querySelector('.loading-text');
+                if (loadingText) {
+                    loadingText.innerHTML = 'Ошибка подключения к серверу...';
+                    loadingText.style.color = '#ff6b6b';
+                }
+            });
+    </script>
+</body>
+</html>
